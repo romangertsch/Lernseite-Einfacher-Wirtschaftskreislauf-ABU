@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="de-CH">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Der Weg der 10er-Note – Der einfache Wirtschaftskreislauf</title>
+<style>
+:root{
+  --navy:#1F4E79; --light:#DEEAF6; --amber:#C08A00; --amber-l:#FFF2CC; --amber-t:#6B4D00;
+  --green:#3FA97C; --green-l:#E6F5EE; --green-t:#1D6646; --red:#C4473D; --red-l:#FBEAE8; --red-t:#8E2A22;
+  --ink:#1B2733; --muted:#55636F; --bg:#F4F7FA; --card:#fff; --line:#D5DEE8;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-size:17px;line-height:1.5}
+button,select{font:inherit;color:inherit}
+h1{font-size:1.45rem;line-height:1.25;color:var(--navy);margin:.2rem 0 .9rem}
+h2{font-size:1.15rem;color:var(--navy);margin:0 0 .5rem}
+p{margin:.4rem 0}
+b,strong{font-weight:650}
+
+/* Kopfzeile */
+.top{position:sticky;top:0;z-index:20;background:rgba(244,247,250,.94);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top-in{max-width:900px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:12px}
+.brand{font-weight:700;color:var(--navy);font-size:.95rem;white-space:nowrap;display:flex;align-items:center;gap:6px}
+.brand svg{width:30px;height:18px}
+.prog{flex:1;display:flex;gap:5px;align-items:center}
+.seg{flex:1;height:8px;border-radius:5px;background:#D7E0EA;position:relative}
+.seg.cur{background:var(--navy)}
+.seg.done{background:var(--green)}
+.prog-l{font-size:.85rem;color:var(--muted);white-space:nowrap}
+
+main{max-width:900px;margin:0 auto;padding:18px 16px 130px}
+.kicker{font-size:.85rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0}
+.card{background:var(--card);border-radius:18px;box-shadow:0 1px 2px rgba(20,40,70,.06),0 4px 16px rgba(20,40,70,.07);padding:16px 18px;margin:0 0 14px}
+.mission{background:var(--light);box-shadow:none;border-left:5px solid var(--navy)}
+.tag{display:inline-block;font-size:.78rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--navy);margin-bottom:2px}
+.narrow{max-width:600px;margin-left:auto;margin-right:auto}
+
+/* Buttons */
+.btn{appearance:none;border:0;border-radius:14px;min-height:52px;padding:12px 20px;font-weight:650;cursor:pointer;background:var(--navy);color:#fff;width:100%;max-width:520px;display:block;margin:0 auto;transition:transform .12s,background .2s}
+.btn:active{transform:scale(.98)}
+.btn:disabled{background:#B9C5D2;cursor:not-allowed}
+.btn.sec{background:#fff;color:var(--navy);border:2px solid var(--navy)}
+.btn.green{background:#2C8A62}
+.btn.inl{width:auto;display:inline-block;margin:6px 0}
+:focus-visible{outline:3px solid #F0A500;outline-offset:2px}
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:30;background:rgba(255,255,255,.96);border-top:1px solid var(--line);padding:10px 16px calc(10px + env(safe-area-inset-bottom))}
+.bar.hide{display:none}
+
+/* Rückmeldung */
+.fb{border-radius:14px;padding:12px 14px;margin:0 0 14px;display:flex;gap:10px;align-items:flex-start;animation:pop .35s ease-out}
+.fb .fi{flex:0 0 26px;height:26px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:15px;color:#fff}
+.fb.ok{background:var(--green-l);color:var(--green-t)} .fb.ok .fi{background:#2C8A62}
+.fb.no{background:var(--red-l);color:var(--red-t)} .fb.no .fi{background:var(--red)}
+.fb.hint,.fb.sol{background:var(--amber-l);color:var(--amber-t)} .fb.hint .fi,.fb.sol .fi{background:#9A6F00}
+.fb p{margin:0}
+@keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* Erkenntnis */
+.erk{background:var(--green-l);border:2px solid var(--green);border-radius:18px;padding:16px 18px;margin:6px 0 14px;animation:pop .5s ease-out}
+.erk .tag{color:var(--green-t)}
+.erk .et{font-size:1.15rem;font-weight:700;color:var(--green-t);margin:.2rem 0 .6rem}
+.stars{display:flex;gap:6px;align-items:center}
+.stars svg{width:30px;height:30px}
+.stars .sl{font-size:.9rem;color:var(--green-t);margin-left:6px}
+.st-on{fill:#E3A300;stroke:#A87900}
+.st-off{fill:#fff;stroke:#B5C1CD}
+
+/* Glossar */
+.term{white-space:nowrap}
+.ib{position:relative;display:inline-grid;place-items:center;width:22px;height:22px;margin:0 2px 0 4px;vertical-align:2px;border-radius:50%;border:1.5px solid var(--navy);background:#fff;color:var(--navy);font-size:13px;font-weight:800;font-style:normal;line-height:1;padding:0;cursor:pointer;font-family:Georgia,serif}
+.ib::after{content:"";position:absolute;inset:-11px}
+.sheet-bg{position:fixed;inset:0;background:rgba(15,30,50,.35);z-index:60;display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:#fff;border-radius:20px 20px 0 0;max-width:560px;width:100%;padding:20px 20px calc(20px + env(safe-area-inset-bottom));animation:up .25s ease-out}
+@media(min-width:700px){.sheet-bg{align-items:center}.sheet{border-radius:20px}}
+@keyframes up{from{transform:translateY(30px);opacity:0}to{transform:none;opacity:1}}
+
+/* Start */
+.hero{text-align:center;padding-top:10px}
+.hero h1{font-size:1.9rem;margin:.6rem 0 .3rem}
+.hero .sub{font-size:1.1rem;color:var(--muted);margin:0 0 1rem}
+.hero-art{width:min(280px,78vw);margin:0 auto;display:block}
+.spin{transform-origin:150px 150px;animation:spin 26s linear infinite}
+.bob{animation:bob 3s ease-in-out infinite;transform-origin:150px 150px}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-10px) rotate(4deg)}}
+.facts{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:14px 0 6px;padding:0;list-style:none}
+.facts li{background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:.92rem;color:var(--muted)}
+
+/* Level 1 */
+.l1wrap{display:grid;gap:14px}
+@media(min-width:760px){.l1wrap{grid-template-columns:330px 1fr;align-items:start}.l1wrap .circ{position:sticky;top:70px}}
+.circ svg{width:100%;max-width:330px;display:block;margin:0 auto}
+.node circle{fill:#fff;stroke:#AEBBC8;stroke-width:2;transition:fill .3s,stroke .3s}
+.node text{font-weight:800;font-size:19px;fill:#8B98A5;text-anchor:middle;dominant-baseline:central}
+.node.on circle{fill:var(--navy);stroke:var(--navy)}
+.node.on text{fill:#fff}
+.node.flash circle{fill:var(--green);stroke:var(--green)}
+#l1note{transition:transform .6s cubic-bezier(.3,.7,.3,1)}
+.arc{fill:none;stroke:#C9D4DF;stroke-width:3;transition:stroke .4s}
+.arc.on{stroke:var(--navy)}
+.sc-list{display:grid;gap:10px}
+.sc{display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;background:#fff;border:2px solid var(--line);border-radius:14px;padding:12px 14px;min-height:56px;cursor:pointer;box-shadow:0 1px 3px rgba(20,40,70,.06);transition:border-color .2s,background .2s}
+.sc:hover{border-color:#9FB6CF}
+.sc .lt{flex:0 0 34px;height:34px;border-radius:50%;background:var(--light);color:var(--navy);font-weight:800;display:grid;place-items:center}
+.sc.done{background:#F3F8F5;border-color:#A9D8C2;cursor:default}
+.sc.done .lt{background:var(--navy);color:#fff}
+.sc .stn{display:block;font-size:.8rem;color:var(--green-t);font-weight:700}
+.shake{animation:shake .45s}
+@keyframes shake{0%,100%{transform:none}20%{transform:translateX(-7px)}40%{transform:translateX(7px)}60%{transform:translateX(-5px)}80%{transform:translateX(4px)}}
+.opts{display:grid;gap:10px;margin-top:8px}
+.opt{text-align:left;background:#fff;border:2px solid var(--line);border-radius:14px;padding:12px 14px;min-height:52px;cursor:pointer;width:100%}
+.opt:hover{border-color:#9FB6CF}
+.opt.right{border-color:var(--green);background:var(--green-l)}
+.opt.wrong{border-color:var(--red);background:var(--red-l)}
+.opt:disabled{cursor:default}
+
+/* Level 2 */
+.legend2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.lg{border-radius:14px;padding:12px;font-size:.95rem}
+.lg.m{background:var(--amber-l);border:2px solid var(--amber);color:var(--amber-t)}
+.lg.g{background:var(--light);border:2px solid var(--navy);color:var(--navy)}
+.lg .h{display:flex;gap:8px;align-items:center;font-weight:750;font-size:1.02rem;margin-bottom:4px}
+.lg svg{width:26px;height:26px;flex:0 0 26px}
+.counter{font-size:.9rem;color:var(--muted);text-align:center;margin:4px 0 8px}
+.qcard{background:#fff;border:2px solid #9FB6CF;border-radius:16px;padding:18px;font-size:1.1rem;font-weight:600;text-align:center;box-shadow:0 6px 18px rgba(20,40,70,.1);margin:0 auto 14px;max-width:520px;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none}
+.qcard .dh{display:block;font-size:.8rem;font-weight:500;color:var(--muted);margin-top:6px}
+.qcard.gone{opacity:.55;transform:scale(.97);transition:all .3s;cursor:default}
+.qcard.gone .dh{visibility:hidden}
+.baskets{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:520px;margin:0 auto 14px}
+.bk{border-radius:16px;min-height:120px;padding:12px 8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;font-weight:750;font-size:1.05rem;transition:transform .15s,box-shadow .15s}
+.bk svg{width:38px;height:38px}
+.bk .n{font-size:.82rem;font-weight:500;opacity:.85}
+.bk.m{background:var(--amber-l);border:3px dashed var(--amber);color:var(--amber-t)}
+.bk.g{background:var(--light);border:3px dashed var(--navy);color:var(--navy)}
+.bk.over,.bk:focus-visible{transform:scale(1.04);box-shadow:0 0 0 4px rgba(31,78,121,.18)}
+.bk.hit{animation:hit .5s}
+@keyframes hit{50%{transform:scale(1.07)}}
+.bk:disabled{cursor:default}
+.ghost{position:fixed;left:0;top:0;z-index:100;pointer-events:none;opacity:.92;box-shadow:0 12px 28px rgba(20,40,70,.25)!important;margin:0!important}
+.dragging{opacity:.35}
+
+/* Kreislauf-Modell */
+.model{width:100%;max-width:560px;display:block;margin:0 auto;overflow:visible}
+.model .bx{fill:#fff;stroke:#9FB6CF;stroke-width:2;transition:fill .3s,stroke .3s}
+.model .box.red .bx{fill:var(--red-l);stroke:var(--red);stroke-width:3}
+.model .bt{font-weight:750;font-size:15.5px;fill:var(--navy);text-anchor:middle}
+.model .bs{font-size:11.5px;fill:var(--muted);text-anchor:middle}
+.model .box.red .bt{fill:var(--red-t)}
+.model .arr{transition:stroke .4s,stroke-width .4s}
+.model .ptx{font-size:14px;text-anchor:middle;dominant-baseline:central}
+.model .ptx .b1{font-weight:700}
+.pill{cursor:default;outline:none}
+.pill[data-drop]{cursor:pointer}
+.pill .pb{transition:fill .3s,stroke .3s}
+.pill.target .pb{stroke:#F0A500;stroke-width:3;animation:pulse 1.2s ease-in-out infinite}
+.pill.over .pb{fill:#FFF8E1;stroke:#F0A500;stroke-width:3.5}
+.pill:focus-visible .pb{stroke:#F0A500;stroke-width:4}
+.pill.wig{animation:shake .45s;transform-box:fill-box;transform-origin:center}
+.pill.glow .pb{stroke:var(--green);stroke-width:4}
+@keyframes pulse{50%{stroke-opacity:.35}}
+.legend{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;font-size:.9rem;margin:6px 0 2px}
+.legend span{display:flex;align-items:center;gap:6px}
+.legend svg{width:20px;height:20px}
+.chips{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.chip{background:#fff;border:2px solid #9FB6CF;border-radius:999px;padding:10px 16px;min-height:48px;font-weight:650;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;box-shadow:0 2px 6px rgba(20,40,70,.08);text-align:center;line-height:1.25}
+.chip.sel{border-color:#F0A500;background:#FFF8E1;box-shadow:0 0 0 4px rgba(240,165,0,.25)}
+.chip.used{display:none}
+.tip{font-size:.92rem;color:var(--muted);text-align:center;margin:8px 0 10px}
+.big-msg{background:linear-gradient(90deg,var(--amber-l),var(--light));border-radius:16px;padding:14px 16px;text-align:center;font-size:1.08rem;margin:0 0 14px;animation:pop .5s}
+.story-mini{border:2px solid #9FB6CF;border-radius:14px;padding:12px 14px;background:#fff;font-weight:600;display:flex;gap:10px;align-items:flex-start;margin-bottom:10px}
+.story-mini .lt{flex:0 0 32px;height:32px;border-radius:50%;background:var(--navy);color:#fff;font-weight:800;display:grid;place-items:center}
+
+/* Level 4 */
+.event{background:var(--red-l);border:2px solid var(--red);border-radius:16px;padding:14px 16px;margin-bottom:14px;color:var(--red-t);display:flex;gap:12px;align-items:center}
+.event svg{flex:0 0 34px;width:34px;height:34px}
+.status{display:inline-flex;align-items:center;gap:8px;font-size:.9rem;font-weight:650;padding:6px 12px;border-radius:999px;margin:0 auto 8px}
+.status.okk{background:var(--green-l);color:var(--green-t)}
+.status.bad{background:var(--red-l);color:var(--red-t)}
+.status .dot{width:10px;height:10px;border-radius:50%;background:currentColor}
+.center{text-align:center}
+.outlook{background:var(--amber-l);border-radius:14px;padding:12px 14px;color:var(--amber-t);font-size:.95rem;margin-bottom:14px}
+
+/* Level 5 */
+.grp{margin-bottom:16px}
+.grp h2{font-size:1.02rem;margin-bottom:8px}
+.grp .cnt{font-weight:500;color:var(--muted);font-size:.88rem}
+.choices{display:flex;flex-wrap:wrap;gap:8px}
+.ch{display:flex;align-items:center;gap:8px;background:#fff;border:2px solid var(--line);border-radius:12px;padding:8px 12px;min-height:48px;cursor:pointer;font-size:.98rem}
+.ch svg{width:24px;height:24px;flex:0 0 24px;color:var(--navy)}
+.ch[aria-pressed="true"]{border-color:var(--navy);background:var(--light);font-weight:650}
+.ch[aria-pressed="true"]::after{content:"✓";color:var(--navy);font-weight:800;margin-left:2px}
+.icons{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.icons .ch{flex-direction:column;justify-content:center;text-align:center;padding:10px 4px;font-size:.84rem;line-height:1.2;gap:5px;min-height:78px}
+.icons .ch svg{width:28px;height:28px}
+.icons .ch[aria-pressed="true"]::after{display:none}
+.icons .ch[aria-pressed="true"]{box-shadow:inset 0 0 0 1px var(--navy)}
+.note-s{font-size:.88rem;color:var(--muted);min-height:1.3em;margin:4px 0 0}
+.gap{margin:0 0 14px;line-height:2.1}
+.gap select{font-size:17px;min-height:44px;border-radius:10px;border:2px solid #9FB6CF;background:#fff;padding:4px 8px;max-width:100%;font-weight:600;color:var(--navy)}
+.gap select.okk{border-color:var(--green);background:var(--green-l);color:var(--green-t)}
+.gap select.bad{border-color:var(--red);background:var(--red-l);color:var(--red-t)}
+.gap select.sol{border-color:var(--amber);background:var(--amber-l);color:var(--amber-t)}
+.gap .gh{display:block;font-size:.88rem;color:var(--red-t);line-height:1.4}
+.gap .mine{background:var(--light);border-radius:6px;padding:1px 6px;font-weight:600}
+.perso-cap{text-align:center;font-weight:700;color:var(--navy);margin:0 0 4px}
+
+/* Abschluss */
+.badge{width:150px;display:block;margin:4px auto 0}
+.sumtab{width:100%;border-collapse:collapse}
+.sumtab td{padding:9px 4px;border-bottom:1px solid var(--line);vertical-align:middle}
+.sumtab td:last-child{text-align:right;white-space:nowrap}
+.sumtab .stars{justify-content:flex-end}
+.sumtab .stars svg{width:22px;height:22px}
+.merk{counter-reset:m;list-style:none;padding:0;margin:0}
+.merk li{counter-increment:m;position:relative;padding:8px 0 8px 42px;border-bottom:1px solid var(--line)}
+.merk li:last-child{border:0}
+.merk li::before{content:counter(m);position:absolute;left:0;top:8px;width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;font-weight:800;display:grid;place-items:center;font-size:.9rem}
+.shot{background:var(--amber-l);color:var(--amber-t);border-radius:14px;padding:12px 14px;display:flex;gap:10px;align-items:center;margin-bottom:14px}
+.shot svg{flex:0 0 30px;width:30px;height:30px}
+
+.card,.status,.erk,.fb,[id]{scroll-margin-top:74px;scroll-margin-bottom:96px}
+main:focus,main:focus-visible{outline:none}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+@media (max-width:380px){ body{font-size:17px} h1{font-size:1.3rem} .icons .ch{font-size:.8rem} }
+</style>
+</head>
+<body>
+<!-- Symbol-Sammlung (alle Illustrationen selbst gezeichnet) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="i-coin" viewBox="-10 -10 20 20"><circle r="9" fill="#E9B83A" stroke="#9A6F00" stroke-width="1.6"/><circle r="5.3" fill="none" stroke="#9A6F00" stroke-width="1.2"/><path d="M-1.6-2.6h3.4M-1.6-2.6v5.4M-1.6 0h2.6" stroke="#7A5700" stroke-width="1.3" fill="none" stroke-linecap="round"/></symbol>
+    <symbol id="i-pack" viewBox="-10 -10 20 20"><rect x="-8.5" y="-7.5" width="17" height="15" rx="2.5" fill="#3E6F9F" stroke="#1F4E79" stroke-width="1.4"/><path d="M0-7.5v15M-8.5-2h17" stroke="#DEEAF6" stroke-width="1.6"/></symbol>
+    <symbol id="i-note" viewBox="0 0 56 32"><rect x="1" y="1" width="54" height="30" rx="4" fill="#F39237" stroke="#C4661A" stroke-width="1.6"/><rect x="5" y="5" width="46" height="22" rx="2" fill="none" stroke="#FFD3A8" stroke-width="1"/><circle cx="15" cy="16" r="6.5" fill="#fff"/><path d="M15 12.3v7.4M11.3 16h7.4" stroke="#E0702A" stroke-width="2.6"/><text x="40" y="21.5" text-anchor="middle" font-family="system-ui,Arial,sans-serif" font-weight="800" font-size="15" fill="#fff">10</text></symbol>
+    <symbol id="i-people" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="8.5" cy="7.5" r="3.2"/><path d="M2.8 20.5c0-4 2.6-6.5 5.7-6.5s5.7 2.5 5.7 6.5"/><circle cx="17" cy="9" r="2.6"/><path d="M15 14.6c.6-.3 1.3-.4 2-.4 2.6 0 4.3 2.1 4.3 5.6"/></symbol>
+    <symbol id="i-kita" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="M2.5 11 12 3.5l9.5 7.5"/><path d="M5 9.5V20.5h14V9.5"/><path d="M10 20.5v-5h4v5"/><circle cx="12" cy="10.5" r="1.6"/></symbol>
+    <symbol id="i-shop" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="M3 9.5 4.5 4h15L21 9.5"/><path d="M3 9.5c0 1.5 1.3 2.5 3 2.5s3-1 3-2.5c0 1.5 1.3 2.5 3 2.5s3-1 3-2.5c0 1.5 1.3 2.5 3 2.5s3-1 3-2.5"/><path d="M5 12v8.5h14V12"/><path d="M10 20.5v-5h4v5"/></symbol>
+    <symbol id="i-house" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 9.8v10.7h13V9.8"/><rect x="9.5" y="13" width="5" height="4" rx=".6"/></symbol>
+    <symbol id="i-school" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="M4 20.5V9l8-5 8 5v11.5z"/><path d="M8 20.5v-4h8v4"/><circle cx="12" cy="10" r="2"/><path d="M12 9.1v1l.7.5"/></symbol>
+    <symbol id="i-blocks" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3.5" y="12.5" width="8" height="8" rx="1"/><rect x="12.5" y="12.5" width="8" height="8" rx="1"/><path d="M8 11.5 12 4l4 7.5z"/></symbol>
+    <symbol id="i-dots" viewBox="0 0 24 24" fill="currentColor"><circle cx="5.5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="18.5" cy="12" r="2"/></symbol>
+    <symbol id="i-shirt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M8.5 3.5 3 6.5l2 4.5 2.5-1.2V20.5h9V9.8L19 11l2-4.5-5.5-3c-.6 1.6-2 2.6-3.5 2.6S9.1 5.1 8.5 3.5z"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="6.5" y="2.5" width="11" height="19" rx="2.5"/><path d="M10.5 18.5h3"/></symbol>
+    <symbol id="i-food" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h18c0 4.7-4 8.5-9 8.5S3 16.7 3 12z"/><path d="M9 8.5c-.8-1 .8-2 0-3.2M13 8.5c-.8-1 .8-2 0-3.2M17 8.5c-.8-1 .8-2 0-3.2"/></symbol>
+    <symbol id="i-ticket" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M3 7h18v3a2 2 0 0 0 0 4v3H3v-3a2 2 0 0 0 0-4z"/><path d="M14.5 7v10" stroke-dasharray="2 2"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><rect x="2.5" y="4" width="19" height="13" rx="2"/><path d="M10 8l5 2.5-5 2.5z" fill="currentColor"/><path d="M8 20.5h8"/></symbol>
+    <symbol id="i-tram" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><rect x="5.5" y="5" width="13" height="13" rx="3"/><path d="M7.5 9h9v4h-9z"/><path d="M8 21l1.5-3M16 21l-1.5-3M9 2.5h6M12 2.5V5"/></symbol>
+    <symbol id="i-cosm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="8.5" y="12" width="7" height="9" rx="1"/><path d="M9.5 12V6.5L14.5 4v8"/></symbol>
+    <symbol id="i-sport" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 12h10"/><rect x="3" y="8" width="4" height="8" rx="1"/><rect x="17" y="8" width="4" height="8" rx="1"/><path d="M1.5 10.5v3M22.5 10.5v3"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2.5 20h19z"/><path d="M12 9.5v5M12 17.3v.2"/></symbol>
+    <symbol id="i-camera" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="6.5" y="2.5" width="11" height="19" rx="2.5"/><path d="M9 7h6v8H9z"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 2.8l2.8 5.8 6.3.9-4.6 4.4 1.1 6.3L12 17.2l-5.6 3 1.1-6.3L2.9 9.5l6.3-.9z" stroke-width="1.5" stroke-linejoin="round"/></symbol>
+  </defs>
+</svg>
+
+<header class="top" id="top">
+  <div class="top-in">
+    <div class="brand"><svg aria-hidden="true"><use href="#i-note"/></svg><span>Der Weg der 10er-Note</span></div>
+    <div class="prog" id="prog" aria-hidden="true"></div>
+    <div class="prog-l" id="progl"></div>
+  </div>
+</header>
+<main id="app" tabindex="-1"></main>
+<div class="bar" id="bar"><button class="btn" id="next" type="button">Weiter</button></div>
+<div id="sheet"></div>
+
+<script>
+"use strict";
+/* ============ Grundlagen ============ */
+const RM = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const $ = (s, r=document) => r.querySelector(s);
+const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
+const app = $('#app');
+const ic = (n, cls='') => `<svg class="${cls}" aria-hidden="true" focusable="false"><use href="#i-${n}"/></svg>`;
+const shuffle = a => { const b=a.slice(); for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];} return b; };
+const OKW = ['Richtig!','Genau so ist es.','Gut gemacht!'];
+let okI = 0; const okw = () => OKW[(okI++)%OKW.length];
+const sleep = ms => new Promise(r=>setTimeout(r, RM?0:ms));
+
+const S = { screen:'start', err:[0,0,0,0,0], stars:[0,0,0,0,0], done:[false,false,false,false,false], perso:null };
+const LEVELS = ['Folgen Sie der Note','Geld oder etwas anderes?','Bauen Sie den Kreislauf','Störung!','Mein Kreislauf'];
+
+/* ============ Glossar ============ */
+const GL = {
+  haushalte:['Haushalte','Das sind die Menschen. Sie arbeiten in Unternehmen und erhalten dafür Lohn. Mit dem Lohn kaufen sie Güter und Dienstleistungen.'],
+  unternehmen:['Unternehmen','Das sind die Betriebe, z. B. eine Kita, ein Spital, ein Laden. Sie brauchen die Arbeit der Menschen. Sie verkaufen Güter und Dienstleistungen und erhalten dafür Zahlungen.'],
+  gueter:['Güter','Güter kann man anfassen, z. B. Sneakers oder ein Sandwich.'],
+  dienstleistung:['Dienstleistung','Dienstleistungen sind Leistungen von Menschen, z. B. Kinderbetreuung, ein Haarschnitt oder eine Beratung. Man kann sie nicht anfassen.'],
+  geldstrom:['Geldstrom','Hier fliesst Geld: Lohn und Zahlungen. Im Spiel erkennen Sie den Geldstrom an der Münze und an der Farbe Gold.'],
+  gueterstrom:['Güterstrom','Hier fliessen Arbeit, Güter und Dienstleistungen. Im Spiel erkennen Sie den Güterstrom am Paket und an der Farbe Dunkelblau.']
+};
+const gl = (k, label) => `<span class="term"><b>${label||GL[k][0]}</b><button type="button" class="ib" data-gl="${k}" aria-label="Erklärung: ${GL[k][0]}">i</button></span>`;
+let lastFocus = null;
+function openGl(k){
+  lastFocus = document.activeElement;
+  const [t,d] = GL[k];
+  $('#sheet').innerHTML = `<div class="sheet-bg" data-close="1"><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="glt"><h2 id="glt">${t}</h2><p>${d}</p><button class="btn" type="button" data-close="1" style="margin-top:14px">Verstanden</button></div></div>`;
+  $('#sheet .btn').focus();
+}
+function closeGl(){ $('#sheet').innerHTML=''; if(lastFocus) lastFocus.focus(); }
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-gl]'); if(b){ e.preventDefault(); openGl(b.dataset.gl); return; }
+  if(e.target.dataset && e.target.dataset.close){ closeGl(); }
+});
+document.addEventListener('keydown', e => { if(e.key==='Escape' && $('#sheet').innerHTML) closeGl(); });
+
+/* ============ Kopfzeile, Weiter-Button, Rückmeldung ============ */
+function setProg(n){
+  const p = $('#prog'); p.innerHTML='';
+  for(let i=1;i<=5;i++){ const s=document.createElement('div'); s.className='seg'+(S.done[i-1]?' done':'')+(i===n?' cur':''); p.appendChild(s); }
+  $('#progl').textContent = n ? `Level ${n}/5` : (S.screen==='end' ? 'Geschafft' : '');
+  p.style.visibility = (n || S.screen==='end') ? 'visible':'hidden';
+}
+let nextFn = null;
+$('#next').addEventListener('click', () => { if(nextFn) nextFn(); });
+function setNext(label, fn, enabled=true){ $('#bar').classList.remove('hide'); const b=$('#next'); b.textContent=label; b.disabled=!enabled; nextFn=fn; }
+function hideNext(){ $('#bar').classList.add('hide'); nextFn=null; }
+function fb(type, html, target='#fb'){
+  const icon = {ok:'✓', no:'!', hint:'?', sol:'i'}[type];
+  const el = $(target); if(!el) return;
+  el.innerHTML = `<div class="fb ${type}" role="status"><span class="fi" aria-hidden="true">${icon}</span><p>${html}</p></div>`;
+  scrollTo(el.firstElementChild);
+}
+function clearFb(target='#fb'){ const el=$(target); if(el) el.innerHTML=''; }
+function scrollTo(el){ if(!el) return; const r=el.getBoundingClientRect(); const barH=$('#bar').classList.contains('hide')?0:$('#bar').offsetHeight; if(r.bottom > window.innerHeight-barH-8 || r.top < 60) el.scrollIntoView({behavior:RM?'auto':'smooth', block:'center'}); }
+function starsHTML(n, label=true){
+  let h='<div class="stars" aria-label="'+n+' von 3 Sternen">';
+  for(let i=0;i<3;i++) h+=`<svg aria-hidden="true"><use href="#i-star" class="${i<n?'st-on':'st-off'}"/></svg>`;
+  if(label) h+=`<span class="sl">${n===3?'ohne Fehler':n===2?'mit wenigen Fehlern':'abgeschlossen'}</span>`;
+  return h+'</div>';
+}
+function finishLevel(n, text){
+  const e=S.err[n-1]; const st = e===0?3:(e<=2?2:1);
+  S.stars[n-1]=st; S.done[n-1]=true; setProg(n);
+  const box=$('#erk');
+  box.innerHTML = `<div class="erk" role="status"><span class="tag">Erkenntnis</span><p class="et">${text}</p>${starsHTML(st)}</div>`;
+  setTimeout(()=>box.firstElementChild.scrollIntoView({behavior:RM?'auto':'smooth',block:'center'}), 80);
+  if(n<5) setNext(`Weiter zu Level ${n+1}`, ()=>show('l'+(n+1)));
+  else setNext('Zum Abschluss', ()=>show('end'));
+}
+function shell(n, mission){
+  return `<p class="kicker">Level ${n} von 5</p><h1>${LEVELS[n-1]}</h1>
+  <div class="card mission"><span class="tag">Mission</span><p>${mission}</p></div>
+  <div id="lv"></div><div id="fb" aria-live="polite"></div><div id="erk"></div>`;
+}
+function wiggle(el){ if(!el) return; el.classList.remove('shake','wig'); void el.getBoundingClientRect(); el.classList.add(el.tagName==='g'?'wig':'shake'); setTimeout(()=>el.classList.remove('shake','wig'),500); }
+
+/* ============ Drag & Drop (Pointer Events) mit Tipp-Alternative ============ */
+function makeDrag(el, onDrop){
+  let sx=0, sy=0, ox=0, oy=0, drag=false, ghost=null, pid=null, over=null;
+  const clean = () => { if(ghost) ghost.remove(); ghost=null; el.classList.remove('dragging'); if(over) over.classList.remove('over'); over=null; pid=null; drag=false; };
+  el.addEventListener('pointerdown', e => {
+    if(e.button>0 || el.disabled) return;
+    sx=e.clientX; sy=e.clientY; drag=false; pid=e.pointerId;
+    try{ el.setPointerCapture(pid); }catch(_){}
+  });
+  el.addEventListener('pointermove', e => {
+    if(pid!==e.pointerId) return;
+    if(!drag && Math.hypot(e.clientX-sx, e.clientY-sy) > 8){
+      drag=true; const r=el.getBoundingClientRect(); ox=sx-r.left; oy=sy-r.top;
+      ghost=el.cloneNode(true); ghost.classList.add('ghost'); ghost.classList.remove('sel'); ghost.style.width=r.width+'px'; ghost.removeAttribute('id');
+      document.body.appendChild(ghost); el.classList.add('dragging');
+    }
+    if(drag){
+      e.preventDefault();
+      ghost.style.transform=`translate(${e.clientX-ox}px,${e.clientY-oy}px)`;
+      const t = document.elementFromPoint(e.clientX, e.clientY); const d = t && t.closest('[data-drop]');
+      if(d!==over){ if(over) over.classList.remove('over'); over=d; if(over) over.classList.add('over'); }
+    }
+  });
+  el.addEventListener('pointerup', e => {
+    if(pid!==e.pointerId) return;
+    if(drag){
+      const t=document.elementFromPoint(e.clientX, e.clientY); const d=t && t.closest('[data-drop]');
+      el._skip=true; setTimeout(()=>el._skip=false, 60);
+      clean(); if(d) onDrop(d.dataset.drop, d);
+    } else { pid=null; }
+  });
+  el.addEventListener('pointercancel', clean);
+}
+
+/* ============ Kreislauf-Modell (SVG) ============ */
+const ARR = {
+  lohn:     {d:'M 330 138 Q 200 -40 70 138', k:'m', x:200, y:49,  aria:'Äusserer Pfeil oben, vom Unternehmen zu den Haushalten'},
+  arbeit:   {d:'M 100 138 Q 200 82 300 138', k:'g', x:200, y:110, aria:'Innerer Pfeil oben, von den Haushalten zum Unternehmen'},
+  gueter:   {d:'M 300 222 Q 200 278 100 222', k:'g', x:200, y:250, aria:'Innerer Pfeil unten, vom Unternehmen zu den Haushalten'},
+  zahlungen:{d:'M 70 222 Q 200 400 330 222', k:'m', x:200, y:311, aria:'Äusserer Pfeil unten, von den Haushalten zum Unternehmen'}
+};
+const GEO = {
+  n:{h:340, by:138, d:{lohn:'M 330 138 Q 200 -40 70 138', arbeit:'M 100 138 Q 200 82 300 138', gueter:'M 300 222 Q 200 278 100 222', zahlungen:'M 70 222 Q 200 400 330 222'}, y:{lohn:49, arbeit:110, gueter:250, zahlungen:311}},
+  t:{h:420, by:175, d:{lohn:'M 330 175 Q 200 -50 70 175', arbeit:'M 100 175 Q 200 95 300 175', gueter:'M 300 259 Q 200 339 100 259', zahlungen:'M 70 259 Q 200 500 330 259'}, y:{lohn:62, arbeit:135, gueter:299, zahlungen:380}}
+};
+const TERM = {lohn:['Lohn'], arbeit:['Arbeit'], gueter:['Güter und','Dienstleistungen'], zahlungen:['Zahlungen für Güter','und Dienstleistungen']};
+const TERM1 = {lohn:'Lohn', arbeit:'Arbeit', gueter:'Güter und Dienstleistungen', zahlungen:'Zahlungen für Güter und Dienstleistungen'};
+const COL = {m:'#C08A00', g:'#1F4E79', grey:'#AEBBC8', red:'#C4473D'};
+let MID=0;
+const MODELS=[];
+const cvs=document.createElement('canvas').getContext('2d');
+function tw(t, bold, fs){ cvs.font=`${bold?700:400} ${fs}px system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif`; return cvs.measureText(t).width; }
+
+function modelSVG(o){
+  const id='m'+(++MID);
+  const mk = c => `<marker id="${id}-${c}" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="13" markerHeight="13" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="${COL[c]}"/></marker>`;
+  const G=GEO[o.tall?'t':'n'];
+  let s=`<svg class="model" id="${id}" data-geo="${o.tall?'t':'n'}" viewBox="0 0 400 ${G.h}" role="img" aria-label="${o.aria||'Einfacher Wirtschaftskreislauf: Haushalte links, Unternehmen rechts, vier Pfeile'}"><defs>${['m','g','grey','red'].map(mk).join('')}</defs>`;
+  for(const k in ARR) s+=`<path class="arr" data-path="${k}" d="${G.d[k]}" fill="none" stroke="${COL.grey}" stroke-width="4" stroke-dasharray="7 6" stroke-linecap="round" marker-end="url(#${id}-grey)"/>`;
+  for(const k in ARR) s+=`<g data-tokens="${k}" aria-hidden="true"></g>`;
+  const Y=G.by; const box=(side,x,icon,t,sub)=>`<g class="box" data-box="${side}"><rect class="bx" x="${x}" y="${Y}" width="118" height="84" rx="14"/><svg x="${x+45}" y="${Y+8}" width="28" height="28" style="color:#1F4E79"><use href="#i-${icon}"/></svg><text class="bt" x="${x+59}" y="${Y+(sub?57:62)}">${t}</text>${sub?`<text class="bs" x="${x+59}" y="${Y+73}">${sub}</text>`:''}</g>`;
+  s+=box('L',4,'people',o.lt||'Haushalte',o.ls||'');
+  s+=box('R',278,o.ricon||'kita',o.rt||'Unternehmen',o.rs||'');
+  for(const k in ARR) s+=`<g class="pill" data-pill="${k}" ${o.drop?`data-drop="${k}" tabindex="0" role="button" aria-label="${ARR[k].aria}"`:''}></g>`;
+  return s+'</svg>';
+}
+function initModel(svgId){
+  const svg=document.getElementById(svgId);
+  const m={svg, id:svgId, a:{}, geo:svg.dataset.geo};
+  for(const k in ARR){
+    const path=svg.querySelector(`[data-path="${k}"]`);
+    m.a[k]={k, path, layer:svg.querySelector(`[data-tokens="${k}"]`), len:path.getTotalLength(), on:false, speed:1, count:5, phase:Math.random(), w:5, state:'grey'};
+    setPill(m,k,null);
+  }
+  MODELS.push(m); startAnim();
+  return m;
+}
+function setArrow(m,k,o){
+  const a=m.a[k]; Object.assign(a,o);
+  const c = a.state==='grey'?COL.grey : a.state==='red'?COL.red : COL[ARR[k].k];
+  a.path.setAttribute('stroke',c);
+  a.path.setAttribute('stroke-width', a.state==='grey'?4:a.w);
+  a.path.setAttribute('stroke-dasharray', a.state==='grey'?'7 6':'none');
+  a.path.setAttribute('marker-end',`url(#${m.id}-${a.state==='grey'?'grey':a.state==='red'?'red':ARR[k].k})`);
+  a.on = a.state!=='grey';
+  const sym = ARR[k].k==='m'?'coin':'pack';
+  a.layer.innerHTML='';
+  if(a.on){ for(let i=0;i<a.count;i++) a.layer.insertAdjacentHTML('beforeend',`<use href="#i-${sym}" x="-8" y="-8" width="16" height="16" opacity="${a.op??1}"/>`); }
+  placeTokens(a);
+}
+function placeTokens(a){
+  const us=a.layer.children; const n=us.length;
+  for(let i=0;i<n;i++){ const t=((a.phase + i/n)%1); const p=a.path.getPointAtLength(t*a.len); us[i].setAttribute('transform',`translate(${p.x.toFixed(1)},${p.y.toFixed(1)})`); }
+}
+let rafOn=false, lastT=0;
+function startAnim(){ if(RM||rafOn) return; rafOn=true; lastT=performance.now(); requestAnimationFrame(tick); }
+function tick(t){
+  const dt=Math.min(.05,(t-lastT)/1000); lastT=t;
+  for(const m of MODELS){ if(!m.svg.isConnected) continue; for(const k in m.a){ const a=m.a[k]; if(!a.on) continue; a.phase=(a.phase + dt*0.15*a.speed)%1; placeTokens(a); } }
+  if(MODELS.some(m=>m.svg.isConnected)) requestAnimationFrame(tick); else rafOn=false;
+}
+function setPill(m,k,lines,kind,opts={}){
+  const g=m.svg.querySelector(`[data-pill="${k}"]`); const A={x:200, y:GEO[m.geo].y[k]};
+  const fs=opts.fs||14, lh=fs+3;
+  let h,w,inner='';
+  const style = {empty:['#fff','#AEBBC8','#7C8894'], m:['#FFF2CC','#C08A00','#5E4300'], g:['#DEEAF6','#1F4E79','#1F4E79'], red:['#FBEAE8','#C4473D','#8E2A22']}[kind||'empty'];
+  if(!lines){ w=58; h=32; inner=`<text class="ptx" x="${A.x}" y="${A.y}" fill="${style[2]}" font-weight="700" font-size="18">?</text>`; }
+  else{
+    const ico = kind && kind!=='empty';
+    const maxW = Math.max(...lines.map((l,i)=>tw(l, i===0, i>0&&opts.small?fs-1:fs)));
+    w = Math.ceil(maxW + (ico?40:26)); h = lines.length*lh + 13;
+    const cx = A.x + (ico?9:0);
+    const y0 = A.y - (lines.length-1)*lh/2;
+    inner = `<text class="ptx" fill="${style[2]}">${lines.map((l,i)=>`<tspan class="${i===0?'b1':''}" x="${cx}" y="${(y0+i*lh).toFixed(1)}" ${i>0&&opts.small?`font-size="${fs-1}"`:''}>${esc(l)}</tspan>`).join('')}</text>`;
+    if(ico){ const sym = (kind==='red'? (ARR[k].k==='m'?'coin':'pack') : (kind==='m'?'coin':'pack')); inner = `<use href="#i-${sym}" x="${A.x - w/2 + 7}" y="${A.y-8}" width="16" height="16"/>` + inner; }
+  }
+  const hw=Math.max(w,140);
+  g.innerHTML = `<rect x="${A.x-hw/2}" y="${A.y-Math.max(h,52)/2}" width="${hw}" height="${Math.max(h,52)}" fill="transparent"/><rect class="pb" x="${A.x-w/2}" y="${A.y-h/2}" width="${w}" height="${h}" rx="${Math.min(16,h/2)}" fill="${style[0]}" stroke="${style[1]}" stroke-width="2" ${!lines?'stroke-dasharray="5 4"':''}/>`+inner;
+}
+function esc(s){ return String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function setBox(m, side, red){ m.svg.querySelector(`[data-box="${side}"]`).classList.toggle('red', !!red); }
+function fullModel(m, labels){
+  for(const k in ARR){ setArrow(m,k,{state:'on', w:5, speed:1, count:5, op:1}); setPill(m,k,(labels&&labels[k])||TERM[k], ARR[k].k, labels?{small:true,fs:14}:{}); }
+}
+const legendHTML = `<div class="legend"><span>${ic('coin')}${gl('geldstrom')}</span><span>${ic('pack')}${gl('gueterstrom')}</span></div>`;
+
+/* ============ Bildschirme ============ */
+function show(name){
+  MODELS.length=0; S.screen=name; clearFb();
+  $('#sheet').innerHTML='';
+  window.scrollTo(0,0);
+  ({start:scrStart, l1:scrL1, l2:scrL2, l3:scrL3, l4:scrL4, l5:scrL5, end:scrEnd})[name]();
+  app.focus({preventScroll:true});
+}
+
+/* ---------- Start ---------- */
+function scrStart(){
+  setProg(0);
+  let ring=''; for(let i=0;i<6;i++){ const a=(i*60)*Math.PI/180; const a2=(i*60+40)*Math.PI/180; ring+=`<path d="M ${150+112*Math.cos(a)} ${150+112*Math.sin(a)} A 112 112 0 0 1 ${150+112*Math.cos(a2)} ${150+112*Math.sin(a2)}" fill="none" stroke="${i%2?'#1F4E79':'#C08A00'}" stroke-width="7" stroke-linecap="round" marker-end="url(#hm${i%2})"/>`; }
+  app.innerHTML = `<div class="hero">
+    <svg class="hero-art" viewBox="0 0 300 300" aria-hidden="true">
+      <defs><marker id="hm0" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="4" markerHeight="4" orient="auto"><path d="M0 0L10 5L0 10z" fill="#C08A00"/></marker><marker id="hm1" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="4" markerHeight="4" orient="auto"><path d="M0 0L10 5L0 10z" fill="#1F4E79"/></marker></defs>
+      <circle cx="150" cy="150" r="138" fill="#DEEAF6"/>
+      <g class="spin">${ring}<use href="#i-coin" x="252" y="140" width="22" height="22"/><use href="#i-pack" x="27" y="140" width="22" height="22"/></g>
+      <g class="bob"><use href="#i-note" x="78" y="109" width="144" height="82"/></g>
+    </svg>
+    <h1>Der Weg der 10er-Note</h1>
+    <p class="sub">Woher kommt Ihr Lohn – und wohin fliesst er?</p>
+    <div class="card narrow" style="text-align:left">
+      <p>Sie folgen einer 10er-Note durch die Kita Sonnenblume, ein Sportgeschäft und zu Familie Keller. So entdecken Sie den <b>einfachen Wirtschaftskreislauf</b>.</p>
+    </div>
+    <ul class="facts"><li>5 Levels</li><li>ca. 20–25 Minuten</li><li>Fehler sind erlaubt</li><li>Keine Daten werden gespeichert</li></ul>
+  </div>`;
+  setNext('Start', ()=>show('l1'));
+}
+
+/* ---------- Level 1 ---------- */
+const STORY = {
+  A:'Aleyna betreut in der Kita Sonnenblume jeden Tag Kinder.',
+  F:'Die Kita betreut Mia (2 Jahre) an drei Tagen pro Woche.',
+  C:'Familie Keller bezahlt der Kita jeden Monat den Elternbeitrag für Mia.',
+  E:'Mit dem Geld der Eltern bezahlt die Kita Ende Monat Aleynas Lohn.',
+  B:'Mit ihrem Lohn kauft Aleyna neue Sneakers in einem Sportgeschäft.',
+  D:'Das Sportgeschäft bezahlt mit diesem Geld den Lohn von Herrn Keller. Er arbeitet dort als Verkäufer.'
+};
+const ORDER=['A','F','C','E','B','D'];
+const H1 = {
+  F:'Aleyna arbeitet in der Kita. Wen betreut die Kita? Denken Sie an Familie Keller.',
+  C:'Wer bezahlt die Kita, damit sie Löhne zahlen kann?',
+  E:'Die Kita hat jetzt Geld von Familie Keller. Wofür braucht sie dieses Geld?',
+  B:'Aleyna hat ihren Lohn erhalten. Was macht sie damit?',
+  D:'Das Sportgeschäft hat jetzt Geld von Aleyna. Wem bezahlt es damit einen Lohn?'
+};
+const W1 = {
+  F:'Die Kita betreut Mia – das ist die Arbeit von Aleyna und ihrem Team.',
+  C:'Familie Keller bezahlt die Kita für die Betreuung von Mia.',
+  E:'Mit dem Geld der Eltern bezahlt die Kita den Lohn von Aleyna.',
+  B:'Aleyna gibt ihren Lohn aus – für Sneakers im Sportgeschäft.',
+  D:'Das Sportgeschäft bezahlt mit dem Geld den Lohn von Herrn Keller.'
+};
+const C1=150, R1=110, NR=52;
+const ang = i => (i*60-90)*Math.PI/180;
+function notePos(a){ return [C1+NR*Math.cos(a), C1+NR*Math.sin(a)]; }
+function scrL1(){
+  setProg(1); S.err[0]=0;
+  let arcs='', nodes='';
+  for(let i=0;i<6;i++){
+    const a1=ang(i)+0.30, a2=ang(i+1)-0.30;
+    arcs+=`<path class="arc" id="arc${i}" d="M ${(C1+R1*Math.cos(a1)).toFixed(1)} ${(C1+R1*Math.sin(a1)).toFixed(1)} A ${R1} ${R1} 0 0 1 ${(C1+R1*Math.cos(a2)).toFixed(1)} ${(C1+R1*Math.sin(a2)).toFixed(1)}" marker-end="url(#amg)"/>`;
+    const x=C1+R1*Math.cos(ang(i)), y=C1+R1*Math.sin(ang(i));
+    nodes+=`<g class="node" id="nd${i}"><circle cx="${x}" cy="${y}" r="25"/><text x="${x}" y="${y}">${i+1}</text></g>`;
+  }
+  const mk=`<marker id="amg" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="11" markerHeight="11" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0L10 5L0 10z" fill="#C9D4DF"/></marker><marker id="amn" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="11" markerHeight="11" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0L10 5L0 10z" fill="#1F4E79"/></marker>`;
+  const order = shuffle(['B','C','D','E','F']);
+  if(order.join('')==='FCEBD') order.reverse();
+  app.innerHTML = shell(1, 'Aleyna erhält Ende Monat ihren Lohn. Woher kommt das Geld? Bringen Sie die Geschichte in die richtige Reihenfolge.');
+  $('#lv').innerHTML = `<div class="l1wrap">
+    <div class="circ card"><svg viewBox="0 0 300 300" role="img" aria-label="Kreis mit sechs Stationen. Die 10er-Note zeigt, wo die Geschichte gerade ist.">
+      <defs>${mk}</defs>
+      <circle cx="${C1}" cy="${C1}" r="${R1}" fill="none" stroke="#EEF2F6" stroke-width="12"/>
+      ${arcs}${nodes}
+      <g id="l1note"><use href="#i-note" x="-28" y="-16" width="56" height="32"/></g>
+    </svg>
+    <p class="tip" style="margin:6px 0 0">Tippen Sie unten das Kärtchen an, das als Nächstes passiert.</p></div>
+    <div><div class="sc-list" id="cards"></div><div id="q1"></div></div>
+  </div>`;
+  const list=$('#cards');
+  const mkCard = (L, done) => { const b=document.createElement('button'); b.type='button'; b.className='sc'+(done?' done':''); b.dataset.l=L; b.innerHTML=`<span class="lt">${L}</span><span>${done?`<span class="stn">Station ${ORDER.indexOf(L)+1}</span>`:''}${STORY[L]}</span>`; return b; };
+  list.appendChild(mkCard('A',true));
+  order.forEach(L=>list.appendChild(mkCard(L,false)));
+  // Kärtchen A: Start
+  const st={step:1, tries:0, busy:false};
+  placeNode(0, true);
+  list.addEventListener('click', e => {
+    const b=e.target.closest('.sc'); if(!b || b.classList.contains('done') || st.busy || st.step>5) return;
+    const L=b.dataset.l, want=ORDER[st.step];
+    if(L===want){ fb('ok', `${okw()} ${W1[L]}`); place(b, L); }
+    else{
+      S.err[0]++; st.tries++; wiggle(b);
+      if(st.tries>=2){ const wb=list.querySelector(`[data-l="${want}"]`); fb('sol', `Hier die Lösung: Als Nächstes kommt Kärtchen <b>${want}</b>. ${W1[want]}`); place(wb, want); }
+      else fb('hint', `Fast – schauen Sie nochmals: ${H1[want]}`);
+    }
+  });
+  function place(b, L){
+    const i=st.step; b.classList.add('done'); b.innerHTML=`<span class="lt">${L}</span><span><span class="stn">Station ${i+1}</span>${STORY[L]}</span>`;
+    // gelöste Kärtchen nach oben (in Reihenfolge)
+    const prev=list.querySelector(`[data-l="${ORDER[i-1]}"]`); list.insertBefore(b, prev.nextSibling);
+    placeNode(i);
+    st.step++; st.tries=0;
+    if(st.step===6) setTimeout(question, RM?0:700);
+  }
+  function placeNode(i, init){
+    const nd=$('#nd'+i); nd.classList.add('on'); nd.querySelector('text').textContent=ORDER[i];
+    if(i>0){ const arc=$('#arc'+(i-1)); arc.classList.add('on'); arc.setAttribute('marker-end','url(#amn)'); }
+    const [x,y]=notePos(ang(i)); $('#l1note').style.transform=`translate(${x}px,${y}px)`;
+    if(!init){ nd.classList.add('flash'); setTimeout(()=>nd.classList.remove('flash'),500); }
+  }
+  function question(){
+    const opts=shuffle([
+      {t:'Familie Keller hat Lohn erhalten und kann wieder den Elternbeitrag bezahlen.', ok:true},
+      {t:'Das Geld ist jetzt aufgebraucht. Die Geschichte ist zu Ende.'},
+      {t:'Herr Keller bringt das Geld zurück zu Aleyna.'}
+    ]);
+    $('#q1').innerHTML=`<div class="card" style="margin-top:14px"><h2>Was passiert jetzt?</h2><p>Herr Keller hat seinen Lohn erhalten. Wie geht es weiter?</p><div class="opts">${opts.map((o,i)=>`<button type="button" class="opt" data-i="${i}">${o.t}</button>`).join('')}</div></div>`;
+    scrollTo($('#q1').firstElementChild);
+    let tries=0;
+    $('#q1').addEventListener('click', e=>{
+      const b=e.target.closest('.opt'); if(!b||b.disabled) return;
+      const o=opts[+b.dataset.i];
+      if(o.ok){ b.classList.add('right'); $$('.opt',$('#q1')).forEach(x=>x.disabled=true); fb('ok','Genau so ist es. Mit dem Lohn kann Familie Keller wieder die Kita bezahlen.'); loop(); }
+      else{ S.err[0]++; tries++; b.classList.add('wrong'); b.disabled=true; wiggle(b);
+        if(tries>=2){ const r=$$('.opt',$('#q1')).find(x=>opts[+x.dataset.i].ok); r.classList.add('right'); $$('.opt',$('#q1')).forEach(x=>x.disabled=true); fb('sol','Hier die Lösung: Familie Keller hat Lohn erhalten. Darum kann sie wieder den Elternbeitrag bezahlen.'); loop(); }
+        else fb('hint','Fast – schauen Sie nochmals: Herr Keller hat jetzt Geld. Was kann Familie Keller damit wieder bezahlen?');
+      }
+    });
+  }
+  async function loop(){
+    const note=$('#l1note');
+    if(!RM){
+      note.style.transition='none';
+      const from=ang(5), to=ang(6+2); const dur=3200; const t0=performance.now();
+      await new Promise(res=>{ const f=t=>{ const p=Math.min(1,(t-t0)/dur); const e=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2; const a=from+(to-from)*e; const [x,y]=notePos(a); note.style.transform=`translate(${x}px,${y}px)`; if(p<1) requestAnimationFrame(f); else res(); }; requestAnimationFrame(f); });
+      note.style.transition='';
+    } else { const [x,y]=notePos(ang(2)); note.style.transform=`translate(${x}px,${y}px)`; }
+    $('#arc5').classList.add('on'); $('#arc5').setAttribute('marker-end','url(#amn)');
+    const n=$('#nd2'); n.classList.add('flash'); setTimeout(()=>n.classList.remove('flash'),700);
+    finishLevel(1,'Geld fliesst im Kreis.');
+  }
+  hideNext();
+}
+
+/* ---------- Level 2 ---------- */
+const L2 = [
+  {t:'Aleyna wickelt in der Kita ein Kind.', k:'g', ok:'Richtig! Wickeln ist Arbeit. Arbeit gehört zum Güterstrom.', no:'Arbeit ist eine Leistung – kein Geld. Darum gehört Arbeit zum Güterstrom.'},
+  {t:'Die Kita überweist Aleyna den Lohn.', k:'m', ok:'Genau so ist es. Der Lohn ist Geld – er fliesst von der Kita zu Aleyna.', no:'Fast – der Lohn ist Geld. Darum gehört er zum Geldstrom.'},
+  {t:'Herr Keller bezahlt den Elternbeitrag per E-Banking.', k:'m', ok:'Richtig! Auch beim E-Banking fliesst Geld – man sieht es nur nicht.', no:'Fast – auch E-Banking ist eine Zahlung. Darum gehört es zum Geldstrom.'},
+  {t:'Der Koch der Kita kocht das Mittagessen für die Kinder.', k:'g', ok:'Gut gemacht! Kochen ist Arbeit. Arbeit gehört zum Güterstrom.', no:'Arbeit ist eine Leistung – kein Geld. Darum gehört Arbeit zum Güterstrom.'},
+  {t:'Aleyna bezahlt in der Migros mit Twint.', k:'m', ok:'Genau so ist es. Twint ist eine Zahlung – auch digitales Geld ist Geld.', no:'Fast – mit Twint bezahlt Aleyna. Das ist Geld, also Geldstrom.'},
+  {t:'Die Migros verkauft Aleyna ein Sandwich.', k:'g', ok:'Richtig! Das Sandwich ist ein Gut. Man kann es anfassen.', no:'Fast – Aleyna erhält ein Sandwich. Das ist ein Gut, also Güterstrom.'},
+  {t:'Herr Keller berät im Sportgeschäft eine Kundin.', k:'g', ok:'Richtig! Beraten ist Arbeit und eine Dienstleistung. Das gehört zum Güterstrom.', no:'Arbeit ist eine Leistung – kein Geld. Darum gehört Arbeit zum Güterstrom.'},
+  {t:'Aleyna bezahlt ihr Handyabo.', k:'m', ok:'Genau so ist es. Aleyna bezahlt Geld für das Handyabo.', no:'Fast – hier bezahlt Aleyna. Bezahlen gehört immer zum Geldstrom.'}
+];
+const kt = n => n===1?'1 Karte':`${n} Karten`;
+function scrL2(){
+  setProg(2); S.err[1]=0;
+  app.innerHTML = shell(2, 'Fliesst hier Geld – oder etwas anderes? Sortieren Sie 8 Karten in den richtigen Korb.');
+  $('#lv').innerHTML = `<div class="card"><h2>Zwei Ströme</h2>
+    <div class="legend2">
+      <div class="lg m"><div class="h">${ic('coin')}Geldstrom</div>Hier fliesst <b>Geld</b>: Lohn, Zahlungen, Überweisungen, Twint.</div>
+      <div class="lg g"><div class="h">${ic('pack')}Güterstrom</div>Hier fliessen <b>Arbeit</b>, ${gl('gueter')} und ${gl('dienstleistung','Dienstleistungen')}.</div>
+    </div></div>
+    <div id="stage"></div>`;
+  const cnt={m:0,g:0}; let idx=0, answered=false;
+  function render(){
+    const c=L2[idx]; answered=false; clearFb();
+    $('#stage').innerHTML = `<p class="counter">Karte ${idx+1} von ${L2.length}</p>
+      <div class="qcard" id="qc" tabindex="-1">${c.t}<span class="dh">Ziehen Sie die Karte in einen Korb – oder tippen Sie auf einen Korb.</span></div>
+      <div class="baskets">
+        <button type="button" class="bk m" data-drop="m">${ic('coin')}Geldstrom<span class="n">${kt(cnt.m)}</span></button>
+        <button type="button" class="bk g" data-drop="g">${ic('pack')}Güterstrom<span class="n">${kt(cnt.g)}</span></button>
+      </div>`;
+    makeDrag($('#qc'), k=>answer(k));
+    $$('.bk').forEach(b=>b.addEventListener('click',()=>answer(b.dataset.drop)));
+    hideNext();
+  }
+  function answer(k){
+    if(answered || !$('#qc')) return; answered=true;
+    const c=L2[idx]; const right=c.k;
+    cnt[right]++;
+    const bk=$(`.bk[data-drop="${right}"]`);
+    $('#qc').classList.add('gone');
+    bk.classList.add('hit'); bk.querySelector('.n').textContent=kt(cnt[right]);
+    $$('.bk').forEach(b=>b.disabled=true);
+    if(k===right) fb('ok', c.ok);
+    else{ S.err[1]++; wiggle($(`.bk[data-drop="${k}"]`)); fb('no', `${c.no} <br><b>Richtig ist: ${right==='m'?'Geldstrom':'Güterstrom'}.</b>`); }
+    idx++;
+    if(idx<L2.length) setNext('Nächste Karte', render);
+    else { hideNext(); finishLevel(2,'Arbeit gehört zum Güterstrom.'); }
+  }
+  render();
+}
+
+/* ---------- Level 3 ---------- */
+const OK3 = {
+  lohn:'Der Lohn ist Geld. Er fliesst vom Unternehmen zu den Haushalten.',
+  arbeit:'Die Haushalte geben dem Unternehmen ihre Arbeit.',
+  gueter:'Das Unternehmen gibt den Haushalten Güter und Dienstleistungen – z. B. die Betreuung von Mia.',
+  zahlungen:'Die Haushalte bezahlen das Unternehmen für Güter und Dienstleistungen.'
+};
+const H3 = {
+  lohn:'Lohn ist Geld und fliesst im äusseren Kreis. Er geht vom Unternehmen zu den Haushalten.',
+  arbeit:'Arbeit fliesst im inneren Kreis. Sie geht von den Haushalten zum Unternehmen.',
+  gueter:'Die Kita betreut Mia: Diese Leistung fliesst im inneren Kreis vom Unternehmen zu den Haushalten.',
+  zahlungen:'Zahlungen sind Geld und fliessen im äusseren Kreis. Sie gehen von den Haushalten zum Unternehmen.'
+};
+const P3 = [
+  {L:'A', k:'arbeit', ok:'Richtig! Aleyna gibt der Kita ihre Arbeit.', h:'Aleyna betreut Kinder. Ist das Geld – oder Arbeit?'},
+  {L:'C', k:'zahlungen', ok:'Genau so ist es. Familie Keller (Haushalt) bezahlt die Kita (Unternehmen).', h:'Familie Keller bezahlt. Welcher Geldpfeil geht von den Haushalten zum Unternehmen?'},
+  {L:'E', k:'lohn', ok:'Gut gemacht! Die Kita bezahlt Aleyna den Lohn.', h:'Aleyna erhält Geld von der Kita. Wie heisst dieses Geld?'}
+];
+function scrL3(){
+  setProg(3); S.err[2]=0;
+  app.innerHTML = shell(3, 'Hier ist das leere Modell. Bringen Sie die vier Begriffe auf die passenden Pfeile.');
+  $('#lv').innerHTML = `<div class="card">
+    <p class="center" style="font-size:.95rem;margin-top:0">Links: ${gl('haushalte')} · Rechts: ${gl('unternehmen')}</p>
+    ${modelSVG({drop:true})}
+    <div id="leg3"></div></div>
+    <div id="msg3"></div>
+    <div id="work3" class="card"></div>`;
+  const m=initModel('m'+MID);
+  const placed={}; const tries={}; let sel=null, phase=1;
+  const work=$('#work3');
+  work.innerHTML = `<h2 class="center">Begriffe</h2><p class="tip" style="margin-top:0">Ziehen Sie einen Begriff auf einen Pfeil. Oder: zuerst Begriff antippen, dann Pfeil (?) antippen.</p><div class="chips" id="chips">${shuffle(Object.keys(TERM1)).map(k=>`<button type="button" class="chip" data-t="${k}">${TERM1[k]}</button>`).join('')}</div><p class="tip">Tipp: Schauen Sie auf die Pfeilspitzen. Wer gibt – wer erhält?</p>`;
+  const targets = () => $$('.pill[data-drop]', m.svg);
+  function markTargets(on){ targets().forEach(p=>p.classList.toggle('target', on && !placed[p.dataset.drop])); }
+  $$('.chip',work).forEach(ch=>{
+    makeDrag(ch, (k)=>{ sel=null; $$('.chip').forEach(c=>c.classList.remove('sel')); markTargets(false); attempt(ch.dataset.t, k); });
+    ch.addEventListener('click',()=>{ if(ch._skip) return; const on=!ch.classList.contains('sel'); $$('.chip').forEach(c=>c.classList.remove('sel')); if(on){ ch.classList.add('sel'); sel=ch.dataset.t; fb('hint','Jetzt tippen Sie auf den passenden Pfeil im Modell (die Felder mit ?).'); } else sel=null; markTargets(on); });
+  });
+  targets().forEach(p=>{
+    const act=()=>{ if(phase===1){ if(!sel){ if(!placed[p.dataset.drop]) fb('hint','Tippen Sie zuerst einen Begriff unten an.'); return; } const t=sel; sel=null; $$('.chip').forEach(c=>c.classList.remove('sel')); markTargets(false); attempt(t, p.dataset.drop); } else if(phase===2) attempt2(p.dataset.drop); };
+    p.addEventListener('click', act);
+    p.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); act(); } });
+  });
+  function put(k){
+    placed[k]=true; setPill(m,k,TERM[k],ARR[k].k); setArrow(m,k,{state:'on', w:5, speed:1, count:5});
+    const ch=$(`.chip[data-t="${k}"]`); if(ch) ch.classList.add('used');
+    const g=m.svg.querySelector(`[data-pill="${k}"]`); g.classList.add('glow'); setTimeout(()=>g.classList.remove('glow'),700);
+    if(Object.keys(placed).length===4) setTimeout(allDone, RM?0:500);
+  }
+  function attempt(t, k){
+    if(placed[k]){ fb('hint','Dieser Pfeil ist schon richtig beschriftet. Wählen Sie einen Pfeil mit ?.'); return; }
+    if(t===k){ fb('ok', `${okw()} ${OK3[k]}`); put(k); }
+    else{
+      S.err[2]++; tries[t]=(tries[t]||0)+1; wiggle(m.svg.querySelector(`[data-pill="${k}"]`));
+      if(tries[t]>=2){ fb('sol', `Hier die Lösung: «${TERM1[t]}» gehört auf diesen Pfeil. ${OK3[t]}`); put(t); }
+      else fb('hint', `Fast – schauen Sie nochmals: ${H3[t]}`);
+    }
+  }
+  function allDone(){
+    phase=0;
+    $('#leg3').innerHTML=legendHTML;
+    $('#msg3').innerHTML=`<div class="big-msg">Sehen Sie es? Geld und Güter fliessen immer in <b>entgegengesetzter Richtung</b>.</div>`;
+    work.style.display='none';
+    scrollTo($('#msg3').firstElementChild);
+    setNext('Weiter: Kärtchen zuordnen', startP2);
+  }
+  let p2=0, t2=0;
+  function startP2(){
+    hideNext(); clearFb(); phase=2; work.style.display='';
+    targets().forEach(p=>p.setAttribute('aria-label', TERM1[p.dataset.drop]));
+    renderP2();
+  }
+  function renderP2(){
+    const c=P3[p2]; t2=0;
+    work.innerHTML=`<h2>Kärtchen ${p2+1} von 3: Welcher Pfeil passt?</h2><div class="story-mini"><span class="lt">${c.L}</span><span>${STORY[c.L]}</span></div><p class="tip" style="margin:0">Tippen Sie oben im Modell auf den passenden Pfeil.</p>`;
+    markTargets(false); targets().forEach(p=>p.classList.add('target'));
+    work.scrollIntoView({behavior:RM?'auto':'smooth',block:'nearest'});
+  }
+  function attempt2(k){
+    const c=P3[p2]; if(!c) return;
+    const g=m.svg.querySelector(`[data-pill="${c.k}"]`);
+    if(k===c.k){ fb('ok', c.ok); next2(g); }
+    else{ S.err[2]++; t2++; wiggle(m.svg.querySelector(`[data-pill="${k}"]`));
+      if(t2>=2){ fb('sol', `Hier die Lösung: Das Kärtchen gehört zum Pfeil «${TERM1[c.k]}». ${c.ok.replace(/^[^!.]*[!.]\s*/,'')}`); next2(g); }
+      else fb('hint', `Fast – schauen Sie nochmals: ${c.h}`);
+    }
+  }
+  function next2(g){
+    targets().forEach(p=>p.classList.remove('target'));
+    g.classList.add('glow'); setTimeout(()=>g.classList.remove('glow'),800);
+    p2++;
+    if(p2<P3.length) setNext('Nächstes Kärtchen', ()=>{ hideNext(); clearFb(); renderP2(); });
+    else { phase=0; work.style.display='none'; finishLevel(3,'Haushalte geben Arbeit und erhalten Lohn. Unternehmen geben Güter und Dienstleistungen und erhalten Zahlungen.'); }
+  }
+  hideNext();
+}
+
+/* ---------- Level 4 ---------- */
+const Q4 = [
+  {q:'Herr Keller erhält keinen Lohn mehr. Was bedeutet das für Familie Keller und Mia?', o:[
+    {t:'Familie Keller hat weniger Lohn. Sie kann den Elternbeitrag nicht mehr zahlen und meldet Mia ab.', ok:true},
+    {t:'Nichts. Mia geht weiter gleich oft in die Kita.'},
+    {t:'Die Kita bezahlt Familie Keller einen Lohn.'}],
+   ok:'Genau so ist es. Ohne Lohn fehlt Familie Keller das Geld für die Kita.',
+   h:'Herr Keller erhält keinen Lohn mehr. Kann die Familie die Kita noch bezahlen?',
+   st:'Familie Keller bezahlt keinen Elternbeitrag mehr.'},
+  {q:'Die Kita erhält weniger Zahlungen. Was bedeutet das für die Kita?', o:[
+    {t:'Die Kita hat weniger Geld und muss sparen.', ok:true},
+    {t:'Die Kita hat mehr Geld als vorher.'},
+    {t:'Für die Kita ändert sich nichts.'}],
+   ok:'Richtig! Weniger Zahlungen heisst: weniger Geld für die Kita.',
+   h:'Familie Keller bezahlt nicht mehr. Hat die Kita dann mehr oder weniger Geld?',
+   st:'Die Kita hat weniger Geld und muss sparen.'},
+  {q:'Das passiert nicht nur bei Familie Keller, sondern bei vielen Familien. Was kann das für Aleyna bedeuten?', o:[
+    {t:'Die Kita braucht vielleicht weniger Personal. Das betrifft auch Aleyna.', ok:true},
+    {t:'Aleyna erhält automatisch mehr Lohn.'},
+    {t:'Das hat nichts mit Aleyna zu tun.'}],
+   ok:'Genau so ist es. Die Störung bei Herrn Keller kommt bis zu Aleyna.',
+   h:'Die Kita hat weniger Geld. Was bedeutet das für Stellen und Löhne?',
+   st:'Weniger Arbeit, weniger Lohn – der ganze Kreislauf ist betroffen.'}
+];
+function scrL4(){
+  setProg(4); S.err[3]=0;
+  app.innerHTML = shell(4, 'Der Kreislauf läuft. Doch dann passiert etwas. Sagen Sie voraus, was im Kreislauf geschieht.');
+  $('#lv').innerHTML = `<div class="card"><div class="center"><span class="status okk" id="stat"><span class="dot"></span><span id="statt">Alles läuft normal.</span></span></div>
+    ${modelSVG({rs:'Kita, Laden', ls:'Kellers, Aleyna'})}${legendHTML}</div>
+    <div id="fb4"></div><div id="work4"></div>`;
+  $('#fb4').appendChild($('#fb'));
+  const m=initModel('m'+MID); fullModel(m);
+  const w=$('#work4');
+  w.innerHTML=`<div class="event">${ic('alert')}<div><b>Ereignis:</b> Herr Keller verliert seine Stelle im Sportgeschäft.</div></div>`;
+  setNext('Was passiert?', ()=>{ stage(0); ask(0); });
+  function status(t, bad){ $('#statt').textContent=t; $('#stat').className='status '+(bad?'bad':'okk'); }
+  function stage(n){
+    if(n===0){ setArrow(m,'lohn',{state:'red', w:3, speed:.45, count:3, op:.8}); setPill(m,'lohn',TERM.lohn,'red'); setBox(m,'L',true); status('Herr Keller erhält keinen Lohn mehr.',true); }
+    if(n===1){ setArrow(m,'zahlungen',{state:'red', w:3, speed:.45, count:3, op:.8}); setPill(m,'zahlungen',TERM.zahlungen,'red'); status(Q4[0].st,true); }
+    if(n===2){ setBox(m,'R',true); setArrow(m,'gueter',{state:'on', w:3, speed:.45, count:3, op:.7}); setArrow(m,'lohn',{state:'red', w:2, speed:.25, count:2, op:.7}); setArrow(m,'zahlungen',{state:'red', w:2, speed:.25, count:2, op:.7}); status(Q4[1].st,true); }
+    if(n===3){ setArrow(m,'arbeit',{state:'red', w:2, speed:.25, count:2, op:.7}); setPill(m,'arbeit',TERM.arbeit,'red'); setArrow(m,'gueter',{state:'red', w:2, speed:.25, count:2, op:.7}); setPill(m,'gueter',TERM.gueter,'red'); status(Q4[2].st,true); }
+  }
+  function ask(i){
+    hideNext(); clearFb();
+    const q=Q4[i]; const opts=shuffle(q.o); let tries=0;
+    $$('#work4 .qbox').forEach(x=>x.remove());
+    const box=document.createElement('div'); box.className='card qbox';
+    box.innerHTML=`<h2>Schritt ${i+1} von 3</h2><p>${q.q}</p><div class="opts">${opts.map((o,j)=>`<button type="button" class="opt" data-j="${j}">${o.t}</button>`).join('')}</div>`;
+    w.appendChild(box); scrollTo(box);
+    box.addEventListener('click', e=>{
+      const b=e.target.closest('.opt'); if(!b||b.disabled) return;
+      const o=opts[+b.dataset.j];
+      const end=(type,txt)=>{ $$('.opt',box).forEach(x=>{x.disabled=true; if(opts[+x.dataset.j].ok) x.classList.add('right');}); stage(i+1); fb(type,txt); setTimeout(()=>$('#stat').scrollIntoView({behavior:RM?'auto':'smooth',block:'start'}),150);
+        if(i<2) setNext('Und dann?', ()=>ask(i+1)); else setNext('Herr Keller findet eine neue Stelle', recover); };
+      if(o.ok) end('ok', q.ok);
+      else{ S.err[3]++; tries++; b.classList.add('wrong'); b.disabled=true; wiggle(b);
+        if(tries>=2) end('sol', 'Hier die Lösung: '+q.o.find(x=>x.ok).t);
+        else fb('hint','Fast – schauen Sie nochmals: '+q.h);
+      }
+    });
+  }
+  function recover(){
+    hideNext(); clearFb();
+    setBox(m,'L',false); setBox(m,'R',false); fullModel(m);
+    status('Herr Keller hat wieder Lohn. Alles läuft wieder normal.',false);
+    $$('#work4 .qbox, #work4 .event').forEach(x=>x.remove());
+    w.insertAdjacentHTML('beforeend', `<div class="fb ok"><span class="fi" aria-hidden="true">✓</span><p>Herr Keller verdient wieder Lohn. Familie Keller bezahlt die Kita, die Kita bezahlt Aleyna – der Kreislauf läuft wieder.</p></div>
+      <div class="outlook"><b>Ausblick:</b> Viele Kitas erhalten zusätzlich Geld vom Kanton. Der Staat fehlt im einfachen Kreislauf – er kommt im erweiterten Kreislauf dazu.</div>`);
+    $('#stat').scrollIntoView({behavior:RM?'auto':'smooth',block:'start'});
+    setTimeout(()=>finishLevel(4,'Eine Störung an einer Stelle betrifft den ganzen Kreislauf.'), RM?0:1200);
+  }
+}
+
+/* ---------- Level 5 ---------- */
+const BETR = [
+  {k:'kita', t:'Kita', icon:'kita', art:'einer Kita', sh:'Kita'},
+  {k:'heim', t:'Tagesheim', icon:'house', art:'einem Tagesheim', sh:'Tagesheim'},
+  {k:'hort', t:'Tagesstruktur / Hort', icon:'school', art:'einer Tagesstruktur', sh:'Hort'},
+  {k:'spiel', t:'Spielgruppe', icon:'blocks', art:'einer Spielgruppe', sh:'Spielgruppe'},
+  {k:'and', t:'Anderes', icon:'dots', art:'einem anderen Betrieb', sh:'Lehrbetrieb'}
+];
+const TAET = ['Kinder betreuen','Znüni vorbereiten','mit Kindern basteln','wickeln','Elterngespräch begleiten','draussen spielen'];
+const KAUF = [
+  {k:'kleider', t:'Kleider', icon:'shirt', ph:'Kleider'},
+  {k:'handy', t:'Handyabo', icon:'phone', ph:'ein Handyabo'},
+  {k:'essen', t:'Essen / Takeaway', icon:'food', ph:'Essen zum Mitnehmen'},
+  {k:'kino', t:'Ausgang / Kino', icon:'ticket', ph:'ein Kinoticket'},
+  {k:'stream', t:'Streaming', icon:'play', ph:'ein Streaming-Abo'},
+  {k:'oev', t:'ÖV-Abo', icon:'tram', ph:'ein ÖV-Abo'},
+  {k:'kosm', t:'Kosmetik', icon:'cosm', ph:'Kosmetik'},
+  {k:'sport', t:'Sport', icon:'sport', ph:'ein Sportangebot'}
+];
+const GAPS = [
+  {id:'g1', a:'Arbeit', o:['Arbeit','Lohn','Zahlungen'], h:'Was geben Sie Ihrem Lehrbetrieb?'},
+  {id:'g2', a:'Lohn', o:['Lohn','Arbeit','Güter'], h:'Was bezahlt Ihnen der Lehrbetrieb?'},
+  {id:'g3', a:'Geldstrom', o:['Geldstrom','Güterstrom'], h:'Lohn ist Geld.'},
+  {id:'g4', a:'Güter und Dienstleistungen', o:['Güter und Dienstleistungen','Lohn','Arbeit'], h:'Was erhalten Sie, wenn Sie etwas kaufen?'},
+  {id:'g5', a:'Arbeitnehmerin/Arbeitnehmer', o:['Arbeitnehmerin/Arbeitnehmer','Arbeitgeberin/Arbeitgeber','Unternehmen'], h:'Sie arbeiten für einen Betrieb.'},
+  {id:'g6', a:'Konsumentin/Konsument', o:['Konsumentin/Konsument','Verkäuferin/Verkäufer','Unternehmen'], h:'Sie kaufen etwas ein.'}
+];
+const lc = s => s.charAt(0).toLowerCase()+s.slice(1);
+const joinU = a => a.length>1 ? a.slice(0,-1).join(', ')+' und '+a[a.length-1] : a[0];
+function persoLabels(p){
+  const b=BETR.find(x=>x.k===p.b); const ks=p.k.map(k=>KAUF.find(x=>x.k===k));
+  return {
+    lohn:['Lohn', `vom Lehrbetrieb (${b.sh})`],
+    arbeit:['Arbeit', ...p.t],
+    gueter:['Güter und Dienstleistungen', ...ks.map(x=>x.t)],
+    zahlungen:['Zahlungen', ...ks.map(x=>'für '+x.t)]
+  };
+}
+function persoModel(p){
+  const b=BETR.find(x=>x.k===p.b);
+  return modelSVG({lt:'Ich', ls:'Haushalt', rt:'Unternehmen', rs:`${b.sh} + Läden`, ricon:b.icon, tall:true, aria:'Mein persönlicher Wirtschaftskreislauf'});
+}
+function scrL5(){
+  setProg(5); S.err[4]=0;
+  app.innerHTML = shell(5, 'Jetzt geht es um Sie. Wählen Sie Ihren Lehrbetrieb, zwei Tätigkeiten und zwei Einkäufe. Daraus entsteht Ihr eigener Kreislauf.');
+  const sel={b:null, t:[], k:[]};
+  $('#lv').innerHTML = `<div class="card" id="pick">
+    <div class="grp"><h2>1. Mein Lehrbetrieb <span class="cnt">(1 wählen)</span></h2><div class="choices" id="cb">${BETR.map(x=>`<button type="button" class="ch" data-v="${x.k}" aria-pressed="false">${ic(x.icon)}${x.t}</button>`).join('')}</div></div>
+    <div class="grp"><h2>2. Meine Tätigkeiten <span class="cnt" id="ct">(2 wählen)</span></h2><div class="choices" id="cta">${TAET.map(x=>`<button type="button" class="ch" data-v="${x}" aria-pressed="false">${x}</button>`).join('')}</div><p class="note-s" id="nt" aria-live="polite"></p></div>
+    <div class="grp" style="margin-bottom:0"><h2>3. Zwei Einkäufe der letzten Wochen <span class="cnt" id="ck">(2 wählen)</span></h2><div class="icons" id="cka">${KAUF.map(x=>`<button type="button" class="ch" data-v="${x.k}" aria-pressed="false">${ic(x.icon)}${x.t}</button>`).join('')}</div><p class="note-s" id="nk" aria-live="polite"></p></div>
+  </div><div id="perso"></div>`;
+  const upd=()=>{
+    $$('#cb .ch').forEach(b=>b.setAttribute('aria-pressed', b.dataset.v===sel.b));
+    $$('#cta .ch').forEach(b=>b.setAttribute('aria-pressed', sel.t.includes(b.dataset.v)));
+    $$('#cka .ch').forEach(b=>b.setAttribute('aria-pressed', sel.k.includes(b.dataset.v)));
+    $('#ct').textContent=`(${sel.t.length} von 2 gewählt)`; $('#ck').textContent=`(${sel.k.length} von 2 gewählt)`;
+    const ready = sel.b && sel.t.length===2 && sel.k.length===2;
+    setNext(ready?'Meinen Kreislauf erstellen':'Bitte 1 + 2 + 2 auswählen', build, ready);
+  };
+  const multi=(arr, v, note)=>{ const i=arr.indexOf(v); if(i>=0) arr.splice(i,1); else if(arr.length<2) arr.push(v); else { $(note).textContent='Sie haben schon zwei gewählt. Tippen Sie eine Auswahl an, um sie zu entfernen.'; return; } $(note).textContent=''; };
+  $('#cb').addEventListener('click',e=>{const b=e.target.closest('.ch'); if(!b) return; sel.b=b.dataset.v; upd();});
+  $('#cta').addEventListener('click',e=>{const b=e.target.closest('.ch'); if(!b) return; multi(sel.t,b.dataset.v,'#nt'); upd();});
+  $('#cka').addEventListener('click',e=>{const b=e.target.closest('.ch'); if(!b) return; multi(sel.k,b.dataset.v,'#nk'); upd();});
+  upd();
+  function build(){
+    S.perso={b:sel.b, t:sel.t.slice(), k:sel.k.slice()};
+    $('#pick').style.display='none';
+    const p=S.perso, b=BETR.find(x=>x.k===p.b), ks=p.k.map(k=>KAUF.find(x=>x.k===k));
+    const selHTML = g => `<select id="${g.id}" aria-label="Lücke: Fachbegriff wählen"><option value="">– wählen –</option>${shuffle(g.o).map(o=>`<option>${o}</option>`).join('')}</select>`;
+    const G={}; GAPS.forEach(g=>G[g.id]=selHTML(g));
+    $('#perso').innerHTML = `<div class="card"><p class="perso-cap">Mein Kreislauf</p>${persoModel(p)}${legendHTML}</div>
+      <div class="card"><h2>Ergänzen Sie die Sätze</h2><p class="tip" style="text-align:left;margin-top:0">Wählen Sie in jedem Feld den passenden Fachbegriff.</p>
+        <p class="gap">Ich arbeite in ${b.art==='einem anderen Betrieb'?'einem Betrieb':b.art}. Dort leiste ich ${G.g1}, zum Beispiel <span class="mine">${joinU(p.t)}</span>.<span class="gh" data-h="g1"></span></p>
+        <p class="gap">Dafür bezahlt mir mein Lehrbetrieb einen ${G.g2}. Das ist der ${G.g3}.<span class="gh" data-h="g2"></span><span class="gh" data-h="g3"></span></p>
+        <p class="gap">Mit meinem Lohn kaufe ich zum Beispiel <span class="mine">${joinU(ks.map(x=>x.ph))}</span>. Dafür erhalte ich ${G.g4}.<span class="gh" data-h="g4"></span></p>
+        <p class="gap" style="margin-bottom:0">Ich bin also gleichzeitig ${G.g5} und ${G.g6}.<span class="gh" data-h="g5"></span><span class="gh" data-h="g6"></span></p>
+      </div>`;
+    const m=initModel('m'+MID); fullModel(m, persoLabels(p));
+    $('#perso').scrollIntoView({behavior:RM?'auto':'smooth',block:'start'});
+    let checks=0;
+    const check=()=>{
+      let wrong=0;
+      GAPS.forEach(g=>{ const s=$('#'+g.id); const ok=s.value===g.a; s.className=ok?'okk':'bad'; if(!ok) wrong++; $(`[data-h="${g.id}"]`).textContent= ok?'':'Tipp: '+g.h; });
+      if(!wrong){ GAPS.forEach(g=>$('#'+g.id).disabled=true); fb('ok','Alles richtig! Sie haben Ihren eigenen Kreislauf beschrieben.'); done(); return; }
+      checks++; S.err[4]++;
+      if(checks>=2){
+        GAPS.forEach(g=>{ const s=$('#'+g.id); if(s.value!==g.a){ s.value=g.a; s.className='sol'; } s.disabled=true; $(`[data-h="${g.id}"]`).textContent=''; });
+        fb('sol','Hier die Lösung: Die gelb markierten Felder sind jetzt richtig ausgefüllt. Lesen Sie die Sätze nochmals durch.'); done();
+      } else fb('hint', `Fast – ${6-wrong} von 6 Feldern stimmen. Schauen Sie die roten Felder nochmals an.`);
+    };
+    setNext('Sätze prüfen', check);
+    function done(){ hideNext(); finishLevel(5,'Ich bin gleichzeitig Arbeitnehmerin/Arbeitnehmer und Konsumentin/Konsument.'); }
+  }
+}
+
+/* ---------- Abschluss ---------- */
+function scrEnd(){
+  setProg(0); $('#prog').style.visibility='visible';
+  const total=S.stars.reduce((a,b)=>a+b,0);
+  const p=S.perso;
+  app.innerHTML = `<p class="kicker center">Abschluss</p><h1 class="center">Geschafft!</h1>
+    <svg class="badge" viewBox="0 0 160 170" role="img" aria-label="Abzeichen Kreislauf-Profi">
+      <path d="M52 112 38 166l22-12 14 16 10-50z" fill="#1F4E79"/><path d="M108 112l14 54-22-12-14 16-10-50z" fill="#C08A00"/>
+      <circle cx="80" cy="76" r="62" fill="#3FA97C"/><circle cx="80" cy="76" r="52" fill="#fff"/>
+      <circle cx="80" cy="76" r="42" fill="none" stroke="#C08A00" stroke-width="5" stroke-dasharray="30 8"/>
+      <circle cx="80" cy="76" r="32" fill="none" stroke="#1F4E79" stroke-width="5" stroke-dasharray="22 7"/>
+      <use href="#i-star" x="62" y="58" width="36" height="36" class="st-on"/>
+    </svg>
+    <p class="center" style="font-size:1.25rem;font-weight:750;color:var(--green-t);margin:.2rem 0 1rem">Kreislauf-Profi</p>
+    <div class="card"><h2>Ihre Sterne: ${total} von 15</h2><table class="sumtab"><tbody>${LEVELS.map((l,i)=>`<tr><td><b>Level ${i+1}</b> · ${l}</td><td>${starsHTML(S.stars[i],false)}</td></tr>`).join('')}</tbody></table></div>
+    <div class="card"><h2>Die 5 Merksätze</h2><ol class="merk">
+      <li>Im einfachen Wirtschaftskreislauf gibt es zwei Teilnehmer: die Haushalte und die Unternehmen.</li>
+      <li>Die Haushalte geben den Unternehmen ihre Arbeit und erhalten dafür Lohn.</li>
+      <li>Mit dem Lohn kaufen die Haushalte Güter und Dienstleistungen.</li>
+      <li>Geldstrom und Güterstrom fliessen immer in entgegengesetzter Richtung.</li>
+      <li>Ich bin gleichzeitig Arbeitnehmerin/Arbeitnehmer und Konsumentin/Konsument.</li></ol></div>
+    <div class="shot">${ic('camera')}<p style="margin:0"><b>Machen Sie einen Screenshot von Ihrem persönlichen Kreislauf und fügen Sie ihn in OneNote ein.</b></p></div>
+    ${p?`<div class="card"><p class="perso-cap">Mein Kreislauf</p>${persoModel(p)}${legendHTML}</div>`:''}`;
+  if(p){ const m=initModel('m'+MID); fullModel(m, persoLabels(p)); }
+  setNext('Nochmals spielen', ()=>{ S.err=[0,0,0,0,0]; S.stars=[0,0,0,0,0]; S.done=[false,false,false,false,false]; S.perso=null; show('start'); });
+}
+
+show('start');
+</script>
+</body>
+</html>
